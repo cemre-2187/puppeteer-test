@@ -1,7 +1,10 @@
 const puppeteer = require("puppeteer")
 
 let test = async () => {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({
+    args: ['--no-sandbox'],
+    timeout: 10000,
+  });
   const page = await browser.newPage();
 
   await page.goto('https://amazon.com');
