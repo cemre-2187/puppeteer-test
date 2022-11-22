@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/cemre-2187/puppeteer-test#readme",
   "dependencies": {
+    "node-cron": "^3.0.2",
     "puppeteer": "^19.2.2"
   }
 }
