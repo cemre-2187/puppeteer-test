@@ -9,7 +9,7 @@ let searchProductTask;
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    await page.goto('https://www.amazon.com');
+    await page.goto('https://amazon.com');
     // await page.reload();
     // ----------------------------- CHANGE LOCATION ----------------------------- //
     // FIXME: ConfirmClose button doesn't work..
@@ -21,10 +21,9 @@ let searchProductTask;
     await page.waitForSelector(locationbtn)
     await page.click(locationbtn)
     await page.waitForSelector(modal)
-    await page.waitForSelector(locationInput)
-    await page.waitForTimeout(500)
+    await page.waitForSelector(locationInput, { visible: true })
     await page.type(locationInput, '10001')
-    await page.click(applyBtn, { delay: 1000 })
+    await page.click(applyBtn, { visible: true })
     await page.reload()
 
 
