@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 const cron = require('node-cron');
-
+let reference = true
 const product = {};
 
 let searchProductTask;
@@ -17,6 +17,7 @@ let searchProductTask;
     const modal = '.a-popover.a-popover-modal.a-declarative'
     const locationInput = '#GLUXZipUpdateInput'
     const applyBtn = '#GLUXZipUpdate > span > input'
+
 
     await page.waitForSelector(locationbtn)
     await page.click(locationbtn)
@@ -47,22 +48,31 @@ let searchProductTask;
         const qtyInput = 'input[name="quantityBox"]'
         const updateMsgContent = 'div.sc-quantity-update-message.a-spacing-top-mini > div > div > div > span'
 
-        const subscribe = await page.$(subscribeDiv)
 
+        const subscribe = await page.$(subscribeDiv)
+        console.log(data[interval])
         if (subscribe) {
             console.log('Subs var')
             await page.click(oneTime, { visible: true })
             await page.waitForSelector(addToCartBtn)
             // await page.evaluate(() => document.getElementById('add-to-cart-button').click())
+            console.log("s", 1)
             await page.click(addToCartBtn, { visible: true })
             await page.waitForSelector(goToCartBtn)
+            console.log("s", 2)
             await page.click(goToCartBtn, { visible: true })
             await page.waitForSelector(qtyBtn)
+            console.log("s", 3)
+            await page.waitForTimeout(4000)
+            console.log(3.5)
             await page.click(qtyBtn, { visible: true })
             await page.waitForSelector(qtyTen)
+            console.log("s", 4)
             await page.click(qtyTen, { visible: true })
             await page.waitForSelector(qtyInput)
+            console.log("s", 5)
             await page.type(qtyInput, '999')
+            console.log("s", 6)
             await page.keyboard.press('Enter')
             // await page.waitForSelector(updateMsgContent)
             // const stockContent = await page.$(updateMsgContent)
@@ -85,22 +95,37 @@ let searchProductTask;
             // await page.evaluate(() => {
             //     document.querySelector('span.a-size-small.sc-action-delete > span > input').click()
             // })
-            await page.click('span.a-size-small.sc-action-delete > span > input', { delay: 2000 })
-            console.log(a)
+            console.log("s", 7)
+            await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            reference = true
+            console.log("s", 8)
             // await page.click('span.a-size-small.sc-action-delete > span > input', { delay: 2000 })
             interval += 1
 
         } else {
             await page.waitForSelector(addToCartBtn)
-            await page.click(addToCartBtn, { visible: true })
+            console.log(1)
+            try {
+                await page.click(addToCartBtn, { visible: true })
+            } catch (error) {
+                await page.click(addToCartBtn, { visible: true })
+            }
+
             await page.waitForSelector(goToCartBtn)
+            console.log(2)
             await page.click(goToCartBtn, { visible: true })
             await page.waitForSelector(qtyBtn)
+            console.log(3)
+            await page.waitForTimeout(4000)
             await page.click(qtyBtn, { visible: true })
+            console.log(3.5)
             await page.waitForSelector(qtyTen)
+            console.log(4)
             await page.click(qtyTen, { visible: true })
             await page.waitForSelector(qtyInput)
+            console.log(5)
             await page.type(qtyInput, '999')
+            console.log(6)
             await page.keyboard.press('Enter')
             // await page.waitForSelector(updateMsgContent)
             const noAvailable = await page.$(updateMsgContent)
@@ -119,9 +144,12 @@ let searchProductTask;
 
             //console.log('VALUE', value)
             // console.log('matchd', matchedArray)
+            console.log(7)
             await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            console.log(8)
             // await page.evaluate(() => document.querySelectorAll('span.a-size-small.sc-action-delete > span > input').click())
             interval += 1
+            reference = true
 
         }
 
@@ -130,13 +158,18 @@ let searchProductTask;
 
     }
 
-    searchProductTask = cron.schedule(`*/20 * * * * *`, () => {
+    searchProductTask = cron.schedule(`*/5 * * * * *`, () => {
         console.log('searchProductTask')
-        calculateStock()
+        if (reference) {
+            reference = false
+            calculateStock()
+        }
     }
     )
 
     searchProductTask.start()
+
+
 
 
 
