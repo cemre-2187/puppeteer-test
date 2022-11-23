@@ -51,16 +51,16 @@ let searchProductTask;
 
         if (subscribe) {
             console.log('Subs var')
-            await page.click(oneTime)
+            await page.click(oneTime, { visible: true })
             await page.waitForSelector(addToCartBtn)
-            await page.evaluate(() => document.getElementById('add-to-cart-button').click())
-            // await page.click(addToCartBtn, { delay: 5000 })
+            // await page.evaluate(() => document.getElementById('add-to-cart-button').click())
+            await page.click(addToCartBtn, { visible: true })
             await page.waitForSelector(goToCartBtn)
-            await page.click(goToCartBtn)
+            await page.click(goToCartBtn, { visible: true })
             await page.waitForSelector(qtyBtn)
-            await page.click(qtyBtn)
+            await page.click(qtyBtn, { visible: true })
             await page.waitForSelector(qtyTen)
-            await page.click(qtyTen)
+            await page.click(qtyTen, { visible: true })
             await page.waitForSelector(qtyInput)
             await page.type(qtyInput, '999')
             await page.keyboard.press('Enter')
@@ -92,13 +92,13 @@ let searchProductTask;
 
         } else {
             await page.waitForSelector(addToCartBtn)
-            await page.click(addToCartBtn, { delay: 2000 })
+            await page.click(addToCartBtn, { visible: true })
             await page.waitForSelector(goToCartBtn)
-            await page.click(goToCartBtn)
+            await page.click(goToCartBtn, { visible: true })
             await page.waitForSelector(qtyBtn)
-            await page.click(qtyBtn)
+            await page.click(qtyBtn, { visible: true })
             await page.waitForSelector(qtyTen)
-            await page.click(qtyTen)
+            await page.click(qtyTen, { visible: true })
             await page.waitForSelector(qtyInput)
             await page.type(qtyInput, '999')
             await page.keyboard.press('Enter')
@@ -119,7 +119,7 @@ let searchProductTask;
 
             //console.log('VALUE', value)
             // console.log('matchd', matchedArray)
-            await page.click('span.a-size-small.sc-action-delete > span > input', { delay: 2000 })
+            await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
             // await page.evaluate(() => document.querySelectorAll('span.a-size-small.sc-action-delete > span > input').click())
             interval += 1
 
