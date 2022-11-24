@@ -55,16 +55,14 @@ let searchProductTask;
             console.log('Subs var')
             await page.click(oneTime, { visible: true })
             await page.waitForSelector(addToCartBtn)
-            // await page.evaluate(() => document.getElementById('add-to-cart-button').click())
+
             console.log("s", 1)
             await page.click(addToCartBtn, { visible: true })
             await page.waitForSelector(goToCartBtn)
             console.log("s", 2)
-            await page.click(goToCartBtn, { visible: true })
+            await page.goto(`https://www.amazon.com/gp/cart/view.html?ref_=nav_cart`)
             await page.waitForSelector(qtyBtn)
             console.log("s", 3)
-            await page.waitForTimeout(4000)
-            console.log(3.5)
             await page.click(qtyBtn, { visible: true })
             await page.waitForSelector(qtyTen)
             console.log("s", 4)
@@ -74,32 +72,43 @@ let searchProductTask;
             await page.type(qtyInput, '999')
             console.log("s", 6)
             await page.keyboard.press('Enter')
-            // await page.waitForSelector(updateMsgContent)
-            // const stockContent = await page.$(updateMsgContent)
-            // const value = await page.evaluate(el => el.textContent, stockContent)
-            const noAvailable = await page.$(updateMsgContent)
-            if (noAvailable) {
-                console.log('999 yok')
-                const stockContent = await page.$(updateMsgContent)
-                const value = await page.evaluate(el => el.textContent, stockContent)
-                if (value.includes('limit')) {
-                    console.log('LİMİTLİ')
-                } else {
-                    const matchedArray = value.match(/This seller has only (\d+) of these available/i);
-                    stock = matchedArray[1]
-                    console.log('STOK', stock)
-                }
+            try {
+                await page.waitForSelector(updateMsgContent, { timeout: 2000 })
+            } catch (error) {
+                console.log("no message")
             }
-            //console.log('VALUE', value)
-            // console.log('matchd', matchedArray)
-            // await page.evaluate(() => {
-            //     document.querySelector('span.a-size-small.sc-action-delete > span > input').click()
-            // })
+
+            if (updateMsgContent) {
+                const noAvailable = await page.$(updateMsgContent)
+                if (noAvailable) {
+                    console.log('999 yok')
+                    const stockContent = await page.$(updateMsgContent)
+                    const value = await page.evaluate(el => el.textContent, stockContent)
+                    if (value.includes('limit')) {
+                        console.log('LİMİTLİ')
+                    } else {
+                        const matchedArray = value.match(/This seller has only (\d+) of these available/i);
+                        stock = matchedArray[1]
+                        console.log('STOK', stock)
+                    }
+                }
+            } else {
+                console.log('999 var')
+            }
+
+
             console.log("s", 7)
-            await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            try {
+                await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            } catch (error) {
+                console.log("errororroroororoororor")
+                setTimeout(async () => {
+                    console.log("logged in")
+                    await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+                }, 2000);
+            }
             reference = true
             console.log("s", 8)
-            // await page.click('span.a-size-small.sc-action-delete > span > input', { delay: 2000 })
             interval += 1
 
         } else {
@@ -110,13 +119,11 @@ let searchProductTask;
             } catch (error) {
                 await page.click(addToCartBtn, { visible: true })
             }
-
             await page.waitForSelector(goToCartBtn)
             console.log(2)
-            await page.click(goToCartBtn, { visible: true })
+            await page.goto(`https://www.amazon.com/gp/cart/view.html?ref_=nav_cart`)
             await page.waitForSelector(qtyBtn)
             console.log(3)
-            await page.waitForTimeout(4000)
             await page.click(qtyBtn, { visible: true })
             console.log(3.5)
             await page.waitForSelector(qtyTen)
@@ -127,35 +134,46 @@ let searchProductTask;
             await page.type(qtyInput, '999')
             console.log(6)
             await page.keyboard.press('Enter')
-            // await page.waitForSelector(updateMsgContent)
-            const noAvailable = await page.$(updateMsgContent)
-            if (noAvailable) {
-                console.log('999 yok')
-                const stockContent = await page.$(updateMsgContent)
-                const value = await page.evaluate(el => el.textContent, stockContent)
-                if (value.includes('limit')) {
-                    console.log('LİMİTLİ')
-                } else {
-                    const matchedArray = value.match(/This seller has only (\d+) of these available/i);
-                    stock = matchedArray[1]
-                    console.log('STOK', stock)
-                }
+            console.log(6.5)
+            try {
+                await page.waitForSelector(updateMsgContent, { timeout: 2000 })
+            } catch (error) {
+                console.log("no message")
             }
 
-            //console.log('VALUE', value)
-            // console.log('matchd', matchedArray)
+            console.log(6.7)
+            if (updateMsgContent) {
+                const noAvailable = await page.$(updateMsgContent)
+                if (noAvailable) {
+                    console.log('999 yok')
+                    const stockContent = await page.$(updateMsgContent)
+                    const value = await page.evaluate(el => el.textContent, stockContent)
+                    if (value.includes('limit')) {
+                        console.log('LİMİTLİ')
+                    } else {
+                        const matchedArray = value.match(/This seller has only (\d+) of these available/i);
+                        stock = matchedArray[1]
+                        console.log('STOK', stock)
+                    }
+                }
+            } else {
+                console.log("999 var")
+            }
             console.log(7)
-            await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            try {
+                await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+            } catch (error) {
+                console.log("errororroroororoororor")
+                setTimeout(async () => {
+                    console.log("logged in")
+                    await page.click('span.a-size-small.sc-action-delete > span > input', { visible: true })
+                }, 2000);
+            }
             console.log(8)
-            // await page.evaluate(() => document.querySelectorAll('span.a-size-small.sc-action-delete > span > input').click())
             interval += 1
             reference = true
 
         }
-
-
-        //await page.waitForTimeout(1000)
-
     }
 
     searchProductTask = cron.schedule(`*/5 * * * * *`, () => {
@@ -169,17 +187,8 @@ let searchProductTask;
 
     searchProductTask.start()
 
-
-
-
-
     // ----------------------------- PRODUCTS HAVE ONE SELLER ----------------------------- //
 })()
-
-
-
-
-
 
 
 
@@ -327,5 +336,7 @@ let searchProductTask;
     //         })
     //     }
 
-    //     calculateStock()
-    // })
+    //     calculateStock()""
+    // })r
+
+
